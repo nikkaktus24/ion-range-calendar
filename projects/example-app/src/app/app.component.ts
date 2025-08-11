@@ -59,7 +59,7 @@ export class AppComponent {
   public dates = [new Date(), new Date()];
   public slotsRange: { from?: Date; to?: Date } = {};
 
-  public mode: PickMode = 'range';
+  public mode: PickMode = 'slots';
 
   private from: Date = startOfDay(subDays(new Date(), 6));
   private to: Date = startOfDay(new Date());

@@ -29,11 +29,11 @@
       @for (day of month().days; track $index) {
         <div
           class="days"
-          [class.startSelection]="isStartSelection(day)"
-          [class.endSelection]="isEndSelection(day)"
+          [class.startSelection]="isStartSelection(day) || isSlotStart(day)"
+          [class.endSelection]="isEndSelection(day) || isSlotEnd(day)"
           [class.is-first-wrap]="day?.isFirst"
           [class.is-last-wrap]="day?.isLast"
-          [class.between]="isBetween(day)"
+          [class.between]="isBetween(day) || isSlotBetween(day)"
         >
           @if (day) {
             <button

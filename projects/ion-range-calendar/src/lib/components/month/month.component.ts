@@ -148,6 +148,42 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     return false;
   }
 
+  // Check if a day is the start of any slot
+  isSlotStart(day: CalendarDay): boolean {
+    if (!day || this.pickMode() !== 'slots') return false;
+    
+    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
+    if (!slot) return false;
+    
+    const slotStart = new Date(slot.from);
+    return new Date(day.time).toDateString() === slotStart.toDateString();
+  }
+
+  // Check if a day is the end of any slot
+  isSlotEnd(day: CalendarDay): boolean {
+    if (!day || this.pickMode() !== 'slots') return false;
+    
+    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
+    if (!slot) return false;
+    
+    const slotEnd = new Date(slot.to);
+    return new Date(day.time).toDateString() === slotEnd.toDateString();
+  }
+
+  // Check if a day is between slot start and end (but not start or end itself)
+  isSlotBetween(day: CalendarDay): boolean {
+    if (!day || this.pickMode() !== 'slots') return false;
+    
+    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
+    if (!slot) return false;
+    
+    const dayTime = new Date(day.time);
+    const slotStart = new Date(slot.from);
+    const slotEnd = new Date(slot.to);
+    
+    return dayTime > slotStart && dayTime < slotEnd;
+  }
+
   onSelected(item: CalendarDay): void {
     if (this.readonly()) return;
     this.select.emit(item);
