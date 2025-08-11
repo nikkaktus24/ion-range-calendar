@@ -57,7 +57,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   readonly DAY_DATE_FORMAT = 'MMMM dd, yyyy';
 
   get _isRange(): boolean {
-    return this.pickMode() === 'range';
+    return this.pickMode() === 'range' || this.pickMode() === 'slots';
   }
 
   public ref = inject(ChangeDetectorRef);
@@ -88,7 +88,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   isEndSelection(day: CalendarDay): boolean {
     if (!day) return false;
     if (
-      this.pickMode() !== 'range' ||
+      (this.pickMode() !== 'range' && this.pickMode() !== 'slots') ||
       !this._isInit ||
       this._date[1] === null
     ) {
@@ -105,7 +105,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   isBetween(day: CalendarDay): boolean {
     if (!day) return false;
 
-    if (this.pickMode() !== 'range' || !this._isInit) {
+    if ((this.pickMode() !== 'range' && this.pickMode() !== 'slots') || !this._isInit) {
       return false;
     }
 
@@ -119,7 +119,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   isStartSelection(day: CalendarDay): boolean {
     if (!day) return false;
     if (
-      this.pickMode() !== 'range' ||
+      (this.pickMode() !== 'range' && this.pickMode() !== 'slots') ||
       !this._isInit ||
       this._date[0] === null
     ) {
@@ -154,6 +154,20 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     if (this.pickMode() === 'single') {
       this._date[0] = item;
       this.ionChange.emit(this._date);
+      return;
+    }
+
+    if (this.pickMode() === 'slots') {
+      // For slots mode, find the slot that contains this day
+      const slot = this.service.findSlotForDay(new Date(item.time), this.service.opts);
+      if (slot) {
+        // Select the entire slot range
+        this._date[0] = this.service.createCalendarDay(new Date(slot.from).getTime(), this.service.opts);
+        this._date[1] = this.service.createCalendarDay(new Date(slot.to).getTime(), this.service.opts);
+        this.selectStart.emit(this._date[0]);
+        this.selectEnd.emit(this._date[1]);
+        this.ionChange.emit(this._date);
+      }
       return;
     }
 

@@ -68,6 +68,25 @@ export interface ModalOptions {
   leaveAnimation?: AnimationBuilder;
 }
 
+export interface SlotRange {
+  /**
+   * The start date of the slot range.
+   */
+  from: Date | string | number;
+  /**
+   * The end date of the slot range.
+   */
+  to: Date | string | number;
+  /**
+   * Optional title for the slot (for display purposes).
+   */
+  title?: string;
+  /**
+   * Optional CSS class for styling the slot.
+   */
+  cssClass?: string;
+}
+
 export interface CalendarOptions {
   /**
    * The start date of the selectable range of dates.
@@ -82,8 +101,14 @@ export interface CalendarOptions {
    * - `single`: Select a single date.
    * - `multi`: Select multiple dates.
    * - `range`: Select a range of dates.
+   * - `slots`: Select from predefined date range slots.
    **/
   pickMode?: PickMode;
+  /**
+   * Array of predefined date range slots for 'slots' mode.
+   * Each slot contains a from and to date range that users can select.
+   */
+  slots?: SlotRange[];
   /**
    * The day of the week that the calendar starts on.
    * - `0`: Sunday
@@ -208,6 +233,12 @@ export interface CalendarModalOptions extends CalendarOptions {
    * This is used when the `pickMode` is set to `range`.
    */
   initialDateRange?: { from: DefaultDate; to?: DefaultDate } | null;
+  /**
+   * The slot to be selected when the calendar is opened.
+   *
+   * This is used when the `pickMode` is set to `slots`.
+   */
+  initialSlot?: SlotRange | null;
 
   /**
    * The date to be selected when the calendar is reset.
@@ -227,6 +258,12 @@ export interface CalendarModalOptions extends CalendarOptions {
    * This is used when the `pickMode` is set to `range`.
    */
   defaultDateRange?: { from: DefaultDate; to?: DefaultDate } | null;
+  /**
+   * The slot to be selected when the calendar is reset.
+   *
+   * This is used when the `pickMode` is set to `slots`.
+   */
+  defaultSlot?: SlotRange | null;
 
   step?: number;
   defaultEndDateToStartDate?: boolean;
@@ -277,7 +314,7 @@ export type Colors =
   | 'light'
   | 'dark'
   | string;
-export type PickMode = 'multi' | 'single' | 'range';
+export type PickMode = 'multi' | 'single' | 'range' | 'slots';
 export type CalendarComponentTypeProperty =
   | 'string'
   | 'js-date'

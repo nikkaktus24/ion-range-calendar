@@ -14,6 +14,7 @@
             <ion-select-option value="single"> Single </ion-select-option>
             <ion-select-option value="multi"> Multi </ion-select-option>
             <ion-select-option value="range"> Range </ion-select-option>
+            <ion-select-option value="slots"> Slots </ion-select-option>
           </ion-select>
         </ion-item>
 
@@ -34,7 +35,7 @@
       (ionChange)="onChange($event)"
       [type]="'js-date'"
       [format]="'yyyy-MM-dd'"
-      [options]="options"
+      [options]="currentOptions"
     >
     </ion-range-calendar>
   </ion-content>

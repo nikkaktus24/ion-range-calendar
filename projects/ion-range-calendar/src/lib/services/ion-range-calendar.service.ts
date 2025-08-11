@@ -20,6 +20,7 @@ import {
   CalendarOriginal,
   CalendarResult,
   DayConfig,
+  SlotRange,
 } from '../calendar.types';
 
 import { defaults } from '../config';
@@ -71,6 +72,7 @@ export class IonRangeCalendarService {
       defaultEndDateToStartDate = true,
       maxRange = 0,
       clearResetsToDefault = false,
+      slots = [],
     } = { ...this.defaultOpts, ...calendarOptions };
 
     //  if from is not provided, but a default range is, set from to the default range from
@@ -141,6 +143,10 @@ export class IonRangeCalendarService {
       defaultEndDateToStartDate,
       maxRange,
       clearResetsToDefault,
+      slots,
+      initialSlot:
+        calendarOptions.initialSlot || calendarOptions.defaultSlot || null,
+      defaultSlot: calendarOptions.defaultSlot || null,
     };
     return this.opts;
   }
@@ -165,6 +171,19 @@ export class IonRangeCalendarService {
   findDayConfig(day: Date, opt: CalendarModalOptions): DayConfig | undefined {
     if (opt.daysConfig && opt.daysConfig.length <= 0) return null;
     return opt.daysConfig?.find((n) => isSameDay(day, n.date));
+  }
+
+  findSlotForDay(day: Date, opt: CalendarModalOptions): SlotRange | undefined {
+    if (!opt.slots || opt.slots.length <= 0) return undefined;
+    return opt.slots.find((slot) => {
+      const slotStart = new Date(slot.from);
+      const slotEnd = new Date(slot.to);
+      return isWithinInterval(day, { start: slotStart, end: slotEnd });
+    });
+  }
+
+  isDayInAnySlot(day: Date, opt: CalendarModalOptions): boolean {
+    return !!this.findSlotForDay(day, opt);
   }
 
   createCalendarDay(
@@ -209,6 +228,11 @@ export class IonRangeCalendarService {
       _disable = dayConfig.disable;
     } else {
       _disable = disableWeeks || !isInRange;
+      
+      // For slots mode, disable days that are not part of any slot
+      if (opt.pickMode === 'slots' && opt.slots && opt.slots.length > 0) {
+        _disable = _disable || !this.isDayInAnySlot(_time, opt);
+      }
     }
 
     let title = new Date(time).getDate().toString();
@@ -336,6 +360,7 @@ export class IonRangeCalendarService {
         result = this.multiFormat(original[0].time);
         break;
       case 'range':
+      case 'slots':
         result = {
           from: this.multiFormat(original[0].time),
           to: this.multiFormat((original[1] || original[0]).time),

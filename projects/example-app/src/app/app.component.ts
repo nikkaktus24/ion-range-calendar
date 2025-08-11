@@ -25,6 +25,7 @@ import {
   CalendarModal,
   CalendarModalOptions,
   PickMode,
+  SlotRange,
 } from 'projects/ion-range-calendar/src/public-api';
 
 @Component({
@@ -56,11 +57,40 @@ export class AppComponent {
     to: new Date(),
   };
   public dates = [new Date(), new Date()];
+  public slotsRange: { from?: Date; to?: Date } = {};
 
   public mode: PickMode = 'range';
 
   private from: Date = startOfDay(subDays(new Date(), 6));
   private to: Date = startOfDay(new Date());
+
+  // Define some example slots for testing
+  public slots: SlotRange[] = [
+    {
+      from: startOfDay(new Date(2024, 11, 10)), // Dec 10, 2024
+      to: startOfDay(new Date(2024, 11, 12)), // Dec 12, 2024
+      title: 'Weekend Slot 1',
+      cssClass: 'weekend-slot'
+    },
+    {
+      from: startOfDay(new Date(2024, 11, 15)), // Dec 15, 2024
+      to: startOfDay(new Date(2024, 11, 18)), // Dec 18, 2024
+      title: 'Midweek Slot',
+      cssClass: 'midweek-slot'
+    },
+    {
+      from: startOfDay(new Date(2024, 11, 20)), // Dec 20, 2024
+      to: startOfDay(new Date(2024, 11, 22)), // Dec 22, 2024
+      title: 'Weekend Slot 2',
+      cssClass: 'weekend-slot'
+    },
+    {
+      from: startOfDay(new Date(2024, 11, 25)), // Dec 25, 2024
+      to: startOfDay(new Date(2024, 11, 28)), // Dec 28, 2024
+      title: 'Holiday Slot',
+      cssClass: 'holiday-slot'
+    }
+  ];
 
   public options: CalendarModalOptions = {
     pickMode: this.mode,
@@ -84,10 +114,26 @@ export class AppComponent {
     this.dateRange = { from: this.from, to: this.to };
   }
 
+  public get currentOptions(): CalendarModalOptions {
+    const baseOptions = { ...this.options };
+    baseOptions.pickMode = this.mode;
+    
+    if (this.mode === 'slots') {
+      baseOptions.slots = this.slots;
+      baseOptions.title = 'Select Slot';
+      baseOptions.from = new Date(2024, 11, 1); // December 1, 2024
+      baseOptions.to = new Date(2024, 11, 31); // December 31, 2024
+    }
+    
+    return baseOptions;
+  }
+
   public get data() {
     switch (this.mode) {
       case 'range':
         return this.dateRange;
+      case 'slots':
+        return this.slotsRange;
       case 'multi':
         return this.dates;
       default:
@@ -104,6 +150,9 @@ export class AppComponent {
       case 'range':
         this.dateRange = value as { from: Date; to: Date };
         break;
+      case 'slots':
+        this.slotsRange = value as { from: Date; to: Date };
+        break;
       case 'multi':
         this.dates = value as Date[];
         break;
@@ -113,7 +162,7 @@ export class AppComponent {
   public async onClick() {
     const modal = await this.modalCtrl.create({
       component: CalendarModal,
-      componentProps: { options: this.options },
+      componentProps: { options: this.currentOptions },
       cssClass: ['calendar-modal'],
     });
     await modal.present();
@@ -132,6 +181,9 @@ export class AppComponent {
         break;
       case 'range':
         this.dateRange = {};
+        break;
+      case 'slots':
+        this.slotsRange = {};
         break;
       case 'multi':
         this.dates = [];

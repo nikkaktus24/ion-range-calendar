@@ -251,6 +251,8 @@ export class IonRangeCalendarComponent implements ControlValueAccessor, OnInit {
         return this.handleSingleChange($event[0]);
       case 'range':
         return this.handleRangeChange($event);
+      case 'slots':
+        return this.handleSlotsChange($event);
       case 'multi':
         return this.handleMultiChange($event);
     }
@@ -263,6 +265,17 @@ export class IonRangeCalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   private handleRangeChange($event: CalendarDay[]): void {
+    if ($event[0] && $event[1]) {
+      const rangeDate = {
+        from: this._handleType($event[0].time),
+        to: this._handleType($event[1].time),
+      };
+      this._onChanged(rangeDate);
+      this.ionChange.emit(rangeDate);
+    }
+  }
+
+  private handleSlotsChange($event: CalendarDay[]): void {
     if ($event[0] && $event[1]) {
       const rangeDate = {
         from: this._handleType($event[0].time),
@@ -403,6 +416,7 @@ export class IonRangeCalendarComponent implements ControlValueAccessor, OnInit {
         break;
 
       case 'range':
+      case 'slots':
         this._calendarMonthValue[0] = this._createCalendarDay(
           (value as RangeChange).from,
         );
