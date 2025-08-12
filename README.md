@@ -3,8 +3,11 @@
 [![NPM version][npm-image]][npm-url]
 [![MIT License][license-image]][license-url]
 
+> **Note:** This package adds slots functionality to the original ion-range-calendar. For standard calendar functionality without slots, please use the original package: [`@googlproxer/ion-range-calendar`](https://github.com/HalleyAssist/ion-range-calendar).
+
 * Supports date range.
 * Supports multi date.
+* **Supports predefined slots** - Select from predefined date ranges.
 * Supports HTML components.
 * Disable weekdays or weekends.
 * Setting days event.
@@ -137,6 +140,54 @@ export class HomePage {
 }
 ```
 
+### Predefined Slots
+
+Use `slots` pick mode to allow users to select from predefined date ranges.
+
+```html
+<ion-range-calendar [(ngModel)]="selectedSlot" [options]="optionsSlots" [type]="type" [format]="'yyyy-MM-dd'">
+</ion-range-calendar>
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { CalendarComponentOptions, IonRangeCalendarComponent, SlotRange } from '@googlproxer/ion-range-calendar';
+
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html',
+  standalone: true,
+  imports: [
+    IonRangeCalendarComponent
+  ]
+})
+export class HomePage {
+  selectedSlot: { from: string; to: string; };
+  type: 'string'; // 'string' | 'js-date' | 'time' | 'object'
+  
+  optionsSlots: CalendarComponentOptions = {
+    pickMode: 'slots',
+    slots: [
+      {
+        from: new Date(2024, 0, 1), // January 1, 2024
+        to: new Date(2024, 0, 7)    // January 7, 2024
+      },
+      {
+        from: new Date(2024, 0, 15), // January 15, 2024
+        to: new Date(2024, 0, 21)    // January 21, 2024
+      },
+      {
+        from: new Date(2024, 1, 1), // February 1, 2024
+        to: new Date(2024, 1, 14)   // February 14, 2024
+      }
+    ]
+  };
+
+  constructor() { }
+  ...
+}
+```
+
 ### Input Properties
 
 | Name     | Type                       | Default      | Description            |
@@ -163,7 +214,8 @@ export class HomePage {
 | from              | `Date` or `number`        | `new Date()`                                                                           | start date                                        |
 | to                | `Date` or `number`        | 0 (Infinite)                                                                           | end date                                          |
 | color             | `string`                  | `'primary'`                                                                            | 'primary', 'secondary', 'danger', 'light', 'dark' |
-| pickMode          | `string`                  | `single`                                                                               | 'multi', 'range', 'single'                        |
+| pickMode          | `string`                  | `single`                                                                               | 'multi', 'range', 'single', 'slots'                        |
+| slots             | `Array<SlotRange>`        | `[]`                                                                                   | predefined date range slots for 'slots' mode     |
 | showToggleButtons | `boolean`                 | `true`                                                                                 | show toggle buttons                               |
 | showMonthPicker   | `boolean`                 | `true`                                                                                 | show month picker                                 |
 | monthPickerFormat | `Array<string>`           | `['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']` | month picker format                               |
@@ -314,6 +366,47 @@ openCalendar() {
 }
 ```
 
+### Slots Modal
+
+Set pickMode to 'slots' to allow users to select from predefined date ranges.
+
+```typescript
+openCalendar() {
+  const options: CalendarModalOptions = {
+    pickMode: 'slots',
+    title: 'SELECT SLOT',
+    slots: [
+      {
+        from: new Date(2024, 0, 1), // January 1, 2024
+        to: new Date(2024, 0, 7)    // January 7, 2024
+      },
+      {
+        from: new Date(2024, 0, 15), // January 15, 2024
+        to: new Date(2024, 0, 21)    // January 21, 2024
+      },
+      {
+        from: new Date(2024, 1, 1), // February 1, 2024
+        to: new Date(2024, 1, 14)   // February 14, 2024
+      }
+    ]
+  };
+
+  const myCalendar = await this.modalCtrl.create({
+    component: CalendarModal,
+    componentProps: { options }
+  });
+
+  myCalendar.present();
+
+  const event = await myCalendar.onDidDismiss();
+  const date = event.data;
+  const from: CalendarResult = date.from;
+  const to: CalendarResult = date.to;
+
+  console.log(date, from, to);
+}
+```
+
 ### Disable weeks
 
 Use index eg: `[0, 6]` denote Sunday and Saturday.
@@ -408,6 +501,58 @@ openCalendar() {
 }
 ```
 
+## Content Projection (Slots)
+
+The calendar modal supports content projection using Angular's `ng-content` directive.
+
+### Sub-header Slot
+
+You can project custom content into the modal's sub-header area using the `[sub-header]` selector:
+
+```html
+<ion-modal [isOpen]="isModalOpen">
+  <ng-template>
+    <calendar-modal [options]="options">
+      <div sub-header>
+        <ion-item>
+          <ion-label>Custom sub-header content</ion-label>
+        </ion-item>
+      </div>
+    </calendar-modal>
+  </ng-template>
+</ion-modal>
+```
+
+```typescript
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular/standalone';
+import { CalendarModal, CalendarModalOptions } from '@googlproxer/ion-range-calendar';
+
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html'
+})
+export class HomePage {
+  constructor(public modalCtrl: ModalController) {}
+
+  async openCalendar() {
+    const options: CalendarModalOptions = {
+      title: 'Custom Calendar'
+    };
+
+    const myCalendar = await this.modalCtrl.create({
+      component: CalendarModal,
+      componentProps: { options }
+    });
+
+    // Add custom sub-header content
+    myCalendar.appendChild(document.createElement('div'));
+
+    myCalendar.present();
+  }
+}
+```
+
 ## API
 
 ### Modal Options
@@ -429,7 +574,10 @@ openCalendar() {
 | defaultSubtitle           | `string`                   | ''                                    | default subtitle in days                                   |
 | cssClass                  | `string`                   | `''`                                  | Additional classes for custom styles, separated by spaces. |
 | canBackwardsSelected      | `boolean`                  | `false`                               | Allow selection to any date before `to`                    |
-| pickMode                  | `string`                   | `single`                              | 'multi', 'range', 'single'                                 |
+| pickMode                  | `string`                   | `single`                              | 'multi', 'range', 'single', 'slots'                                 |
+| slots                     | `Array<SlotRange>`         | `[]`                                  | predefined date range slots for 'slots' mode               |
+| initialSlot               | `SlotRange` or `null`      | undefined                             | initial slot data, applies to slots                        |
+| defaultSlot               | `SlotRange` or `null`      | undefined                             | default slot data, applies to slots                        |
 | disableWeeks              | `Array<number>`            | `[]`                                  | week to be disabled (0-6)                                  |
 | closeLabel                | `string`                   | `CANCEL`                              | cancel button label                                        |
 | doneLabel                 | `string`                   | `DONE`                                | done button label                                          |
@@ -452,6 +600,7 @@ openCalendar() {
 | single   | `{ date: CalendarResult }`                               |
 | range    | `{ from: CalendarResult, to: CalendarResult }`           |
 | multi    | `Array<CalendarResult>`                                  |
+| slots    | `{ from: CalendarResult, to: CalendarResult }`           |
 
 ### onDidDismiss Output `{ role } = event`
 
@@ -471,6 +620,13 @@ openCalendar() {
 | disable  | `boolean` | false     | disable                               |
 | title    | `string`  | undefined | displayed title eg: `'today'`         |
 | subTitle | `string`  | undefined | subTitle subTitle eg: `'New Year\'s'` |
+
+#### SlotRange
+
+| Name | Type                   | Description                      |
+| ---- | ---------------------- | -------------------------------- |
+| from | `Date` or `string` or `number` | The start date of the slot range |
+| to   | `Date` or `string` or `number` | The end date of the slot range   |
 
 ### CalendarResult
 
