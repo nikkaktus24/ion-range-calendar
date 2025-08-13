@@ -12,7 +12,7 @@
               [class.marked]="day.marked"
               [class.last-month-day]="day.isLastMonth"
               [class.next-month-day]="day.isNextMonth"
-              [class.on-selected]="isSelected(day ? day.time : $index)"
+              [class.on-selected]="pickMode() !== 'slots' && isSelected(day ? day.time : $index)"
               [disabled]="day.disable"
             >
               <p>{{ day.title }}</p>
@@ -49,7 +49,7 @@
               [class.next-month-day]="day.isNextMonth"
               [class.is-first]="day.isFirst"
               [class.is-last]="day.isLast"
-              [class.on-selected]="isSelected(day ? day.time : $index)"
+              [class.on-selected]="pickMode() !== 'slots' && isSelected(day ? day.time : $index)"
               [disabled]="day.disable"
             >
               <p>{{ day.title }}</p>
