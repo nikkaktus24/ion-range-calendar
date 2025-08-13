@@ -148,25 +148,25 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     return false;
   }
 
-  // Check if a day is the start of any slot
+  // Check if a day is the start of any slot (considering combined slots)
   isSlotStart(day: CalendarDay): boolean {
     if (!day || this.pickMode() !== 'slots') return false;
     
-    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
-    if (!slot) return false;
+    const combinedSlot = this.service.findCombinedSlotForDay(new Date(day.time), this.service.opts);
+    if (!combinedSlot) return false;
     
-    const slotStart = new Date(slot.from);
+    const slotStart = new Date(combinedSlot.from);
     return new Date(day.time).toDateString() === slotStart.toDateString();
   }
 
-  // Check if a day is the end of any slot
+  // Check if a day is the end of any slot (considering combined slots)
   isSlotEnd(day: CalendarDay): boolean {
     if (!day || this.pickMode() !== 'slots') return false;
     
-    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
-    if (!slot) return false;
+    const combinedSlot = this.service.findCombinedSlotForDay(new Date(day.time), this.service.opts);
+    if (!combinedSlot) return false;
     
-    const slotEnd = new Date(slot.to);
+    const slotEnd = new Date(combinedSlot.to);
     return new Date(day.time).toDateString() === slotEnd.toDateString();
   }
 
@@ -174,12 +174,12 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   isSlotBetween(day: CalendarDay): boolean {
     if (!day || this.pickMode() !== 'slots') return false;
     
-    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
-    if (!slot) return false;
+    const combinedSlot = this.service.findCombinedSlotForDay(new Date(day.time), this.service.opts);
+    if (!combinedSlot) return false;
     
     const dayTime = new Date(day.time);
-    const slotStart = new Date(slot.from);
-    const slotEnd = new Date(slot.to);
+    const slotStart = new Date(combinedSlot.from);
+    const slotEnd = new Date(combinedSlot.to);
     
     return dayTime > slotStart && dayTime < slotEnd;
   }
@@ -188,11 +188,11 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   isSlotSingle(day: CalendarDay): boolean {
     if (!day || this.pickMode() !== 'slots') return false;
     
-    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
-    if (!slot) return false;
+    const combinedSlot = this.service.findCombinedSlotForDay(new Date(day.time), this.service.opts);
+    if (!combinedSlot) return false;
     
-    const slotStart = new Date(slot.from);
-    const slotEnd = new Date(slot.to);
+    const slotStart = new Date(combinedSlot.from);
+    const slotEnd = new Date(combinedSlot.to);
     
     return slotStart.toDateString() === slotEnd.toDateString() && 
            new Date(day.time).toDateString() === slotStart.toDateString();
@@ -208,12 +208,13 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     }
 
     if (this.pickMode() === 'slots') {
-      // For slots mode, find the slot that contains this day
-      const slot = this.service.findSlotForDay(new Date(item.time), this.service.opts);
-      if (slot) {
-        // Select the entire slot range
-        this._date[0] = this.service.createCalendarDay(new Date(slot.from).getTime(), this.service.opts);
-        this._date[1] = this.service.createCalendarDay(new Date(slot.to).getTime(), this.service.opts);
+      // For slots mode, find the combined slot that contains this day
+      // This will combine intersecting slots into one with smallest start and largest end
+      const combinedSlot = this.service.findCombinedSlotForDay(new Date(item.time), this.service.opts);
+      if (combinedSlot) {
+        // Select the entire combined slot range
+        this._date[0] = this.service.createCalendarDay(new Date(combinedSlot.from).getTime(), this.service.opts);
+        this._date[1] = this.service.createCalendarDay(new Date(combinedSlot.to).getTime(), this.service.opts);
         this.selectStart.emit(this._date[0]);
         this.selectEnd.emit(this._date[1]);
         this.ionChange.emit(this._date);

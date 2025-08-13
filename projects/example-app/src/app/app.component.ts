@@ -64,7 +64,7 @@ export class AppComponent {
   private from: Date = startOfDay(subDays(new Date(), 6));
   private to: Date = startOfDay(new Date());
 
-  // Define some example slots for testing
+  // Define some example slots for testing - including 3 intersecting slots
   public slots: SlotRange[] = [
     {
       from: startOfDay(new Date(2024, 11, 10)), // Dec 10, 2024
@@ -78,17 +78,24 @@ export class AppComponent {
       title: 'Midweek Slot',
       cssClass: 'midweek-slot'
     },
+    // Three intersecting slots to test the algorithm:
     {
       from: startOfDay(new Date(2024, 11, 20)), // Dec 20, 2024
-      to: startOfDay(new Date(2024, 11, 26)), // Dec 22, 2024
-      title: 'Weekend Slot 2',
-      cssClass: 'weekend-slot'
+      to: startOfDay(new Date(2024, 11, 24)), // Dec 24, 2024
+      title: 'Slot A',
+      cssClass: 'slot-a'
     },
     {
-      from: startOfDay(new Date(2024, 11, 25)), // Dec 25, 2024
-      to: startOfDay(new Date(2024, 11, 28)), // Dec 28, 2024
-      title: 'Holiday Slot',
-      cssClass: 'holiday-slot'
+      from: startOfDay(new Date(2024, 11, 23)), // Dec 23, 2024 (intersects with Slot A)
+      to: startOfDay(new Date(2024, 11, 27)), // Dec 27, 2024
+      title: 'Slot B',
+      cssClass: 'slot-b'
+    },
+    {
+      from: startOfDay(new Date(2024, 11, 26)), // Dec 26, 2024 (intersects with Slot B)
+      to: startOfDay(new Date(2024, 11, 30)), // Dec 30, 2024
+      title: 'Slot C',
+      cssClass: 'slot-c'
     }
   ];
 

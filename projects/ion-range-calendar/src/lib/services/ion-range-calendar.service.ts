@@ -182,6 +182,83 @@ export class IonRangeCalendarService {
     });
   }
 
+  /**
+   * Find all slots that intersect with each other and return a combined slot
+   * with the earliest start date and latest end date
+   */
+  findCombinedSlotForDay(day: Date, opt: CalendarModalOptions): SlotRange | undefined {
+    if (!opt.slots || opt.slots.length <= 0) return undefined;
+    
+    // Find all slots that contain this day
+    const slotsContainingDay = opt.slots.filter((slot) => {
+      const slotStart = new Date(slot.from);
+      const slotEnd = new Date(slot.to);
+      return isWithinInterval(day, { start: slotStart, end: slotEnd });
+    });
+
+    if (slotsContainingDay.length === 0) return undefined;
+    if (slotsContainingDay.length === 1) return slotsContainingDay[0];
+
+    // Find all slots that intersect with any of the slots containing the day
+    const allIntersectingSlots = new Set<SlotRange>(slotsContainingDay);
+    
+    // Keep adding intersecting slots until no new ones are found
+    let foundNewSlots = true;
+    while (foundNewSlots) {
+      foundNewSlots = false;
+      const currentSlots = Array.from(allIntersectingSlots);
+      
+      for (const currentSlot of currentSlots) {
+        for (const otherSlot of opt.slots) {
+          if (allIntersectingSlots.has(otherSlot)) continue;
+          
+          if (this.doSlotsIntersect(currentSlot, otherSlot)) {
+            allIntersectingSlots.add(otherSlot);
+            foundNewSlots = true;
+          }
+        }
+      }
+    }
+
+    // Combine all intersecting slots into one with earliest start and latest end
+    const intersectingSlotArray = Array.from(allIntersectingSlots);
+    const earliestStart = intersectingSlotArray.reduce((earliest, slot) => {
+      const slotStart = new Date(slot.from);
+      return slotStart < earliest ? slotStart : earliest;
+    }, new Date(intersectingSlotArray[0].from));
+
+    const latestEnd = intersectingSlotArray.reduce((latest, slot) => {
+      const slotEnd = new Date(slot.to);
+      return slotEnd > latest ? slotEnd : latest;
+    }, new Date(intersectingSlotArray[0].to));
+
+    // Create combined slot with titles from all intersecting slots
+    const combinedTitle = intersectingSlotArray
+      .map(slot => slot.title)
+      .filter(title => title)
+      .join(' + ');
+
+    return {
+      from: earliestStart,
+      to: latestEnd,
+      title: combinedTitle || 'Combined Slot',
+      cssClass: 'combined-slot'
+    };
+  }
+
+  /**
+   * Check if two slots intersect with each other
+   */
+  private doSlotsIntersect(slot1: SlotRange, slot2: SlotRange): boolean {
+    const slot1Start = new Date(slot1.from);
+    const slot1End = new Date(slot1.to);
+    const slot2Start = new Date(slot2.from);
+    const slot2End = new Date(slot2.to);
+
+    // Two slots intersect if one starts before the other ends and vice versa
+    return slot1Start <= slot2End && slot2Start <= slot1End;
+  }
+
   isDayInAnySlot(day: Date, opt: CalendarModalOptions): boolean {
     return !!this.findSlotForDay(day, opt);
   }
