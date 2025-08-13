@@ -114,6 +114,56 @@
 :host .primary .between button.days-btn p {
   color: #fff;
 }
+:host .primary .slotStart button.days-btn {
+  background-color: var(--ion-color-primary);
+  width: 100%;
+  border-radius: 36px 0 0 36px;
+  position: relative;
+}
+:host .primary .slotEnd button.days-btn {
+  background-color: var(--ion-color-primary);
+  width: 100%;
+  border-radius: 0 36px 36px 0;
+  position: relative;
+}
+:host .primary .slotStart button.days-btn:after,
+:host .primary .slotEnd button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .primary .slotStart button.days-btn p,
+:host .primary .slotEnd button.days-btn p {
+  color: #fff;
+}
+:host .primary .slotSingle button.days-btn {
+  background-color: var(--ion-color-primary);
+  width: 100%;
+  border-radius: 50%;
+  position: relative;
+}
+:host .primary .slotSingle button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .primary .slotSingle button.days-btn p {
+  color: #fff;
+}
 :host .primary .endSelection button.days-btn {
   border-radius: 50%;
 }
@@ -125,7 +175,10 @@
 }
 :host .primary .startSelection button.days-btn,
 :host .primary .endSelection button.days-btn,
-:host .primary .between button.days-btn {
+:host .primary .between button.days-btn,
+:host .primary .slotStart button.days-btn,
+:host .primary .slotEnd button.days-btn,
+:host .primary .slotSingle button.days-btn {
   -webkit-transition-property: background-color;
   -moz-transition-property: background-color;
   -ms-transition-property: background-color;
@@ -234,6 +287,56 @@
 :host .secondary .between button.days-btn p {
   color: #fff;
 }
+:host .secondary .slotStart button.days-btn {
+  background-color: var(--ion-color-secondary);
+  width: 100%;
+  border-radius: 36px 0 0 36px;
+  position: relative;
+}
+:host .secondary .slotEnd button.days-btn {
+  background-color: var(--ion-color-secondary);
+  width: 100%;
+  border-radius: 0 36px 36px 0;
+  position: relative;
+}
+:host .secondary .slotStart button.days-btn:after,
+:host .secondary .slotEnd button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .secondary .slotStart button.days-btn p,
+:host .secondary .slotEnd button.days-btn p {
+  color: #fff;
+}
+:host .secondary .slotSingle button.days-btn {
+  background-color: var(--ion-color-secondary);
+  width: 100%;
+  border-radius: 50%;
+  position: relative;
+}
+:host .secondary .slotSingle button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .secondary .slotSingle button.days-btn p {
+  color: #fff;
+}
 :host .secondary .endSelection button.days-btn {
   border-radius: 50%;
 }
@@ -245,7 +348,10 @@
 }
 :host .secondary .startSelection button.days-btn,
 :host .secondary .endSelection button.days-btn,
-:host .secondary .between button.days-btn {
+:host .secondary .between button.days-btn,
+:host .secondary .slotStart button.days-btn,
+:host .secondary .slotEnd button.days-btn,
+:host .secondary .slotSingle button.days-btn {
   -webkit-transition-property: background-color;
   -moz-transition-property: background-color;
   -ms-transition-property: background-color;
@@ -354,6 +460,56 @@
 :host .danger .between button.days-btn p {
   color: #fff;
 }
+:host .danger .slotStart button.days-btn {
+  background-color: var(--ion-color-danger);
+  width: 100%;
+  border-radius: 36px 0 0 36px;
+  position: relative;
+}
+:host .danger .slotEnd button.days-btn {
+  background-color: var(--ion-color-danger);
+  width: 100%;
+  border-radius: 0 36px 36px 0;
+  position: relative;
+}
+:host .danger .slotStart button.days-btn:after,
+:host .danger .slotEnd button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .danger .slotStart button.days-btn p,
+:host .danger .slotEnd button.days-btn p {
+  color: #fff;
+}
+:host .danger .slotSingle button.days-btn {
+  background-color: var(--ion-color-danger);
+  width: 100%;
+  border-radius: 50%;
+  position: relative;
+}
+:host .danger .slotSingle button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .danger .slotSingle button.days-btn p {
+  color: #fff;
+}
 :host .danger .endSelection button.days-btn {
   border-radius: 50%;
 }
@@ -365,7 +521,10 @@
 }
 :host .danger .startSelection button.days-btn,
 :host .danger .endSelection button.days-btn,
-:host .danger .between button.days-btn {
+:host .danger .between button.days-btn,
+:host .danger .slotStart button.days-btn,
+:host .danger .slotEnd button.days-btn,
+:host .danger .slotSingle button.days-btn {
   -webkit-transition-property: background-color;
   -moz-transition-property: background-color;
   -ms-transition-property: background-color;
@@ -474,6 +633,56 @@
 :host .dark .between button.days-btn p {
   color: #fff;
 }
+:host .dark .slotStart button.days-btn {
+  background-color: var(--ion-color-dark);
+  width: 100%;
+  border-radius: 36px 0 0 36px;
+  position: relative;
+}
+:host .dark .slotEnd button.days-btn {
+  background-color: var(--ion-color-dark);
+  width: 100%;
+  border-radius: 0 36px 36px 0;
+  position: relative;
+}
+:host .dark .slotStart button.days-btn:after,
+:host .dark .slotEnd button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .dark .slotStart button.days-btn p,
+:host .dark .slotEnd button.days-btn p {
+  color: #fff;
+}
+:host .dark .slotSingle button.days-btn {
+  background-color: var(--ion-color-dark);
+  width: 100%;
+  border-radius: 50%;
+  position: relative;
+}
+:host .dark .slotSingle button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .dark .slotSingle button.days-btn p {
+  color: #fff;
+}
 :host .dark .endSelection button.days-btn {
   border-radius: 50%;
 }
@@ -485,7 +694,10 @@
 }
 :host .dark .startSelection button.days-btn,
 :host .dark .endSelection button.days-btn,
-:host .dark .between button.days-btn {
+:host .dark .between button.days-btn,
+:host .dark .slotStart button.days-btn,
+:host .dark .slotEnd button.days-btn,
+:host .dark .slotSingle button.days-btn {
   -webkit-transition-property: background-color;
   -moz-transition-property: background-color;
   -ms-transition-property: background-color;
@@ -594,6 +806,56 @@
 :host .light .between button.days-btn p {
   color: #a0a0a0;
 }
+:host .light .slotStart button.days-btn {
+  background-color: var(--ion-color-light);
+  width: 100%;
+  border-radius: 36px 0 0 36px;
+  position: relative;
+}
+:host .light .slotEnd button.days-btn {
+  background-color: var(--ion-color-light);
+  width: 100%;
+  border-radius: 0 36px 36px 0;
+  position: relative;
+}
+:host .light .slotStart button.days-btn:after,
+:host .light .slotEnd button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .light .slotStart button.days-btn p,
+:host .light .slotEnd button.days-btn p {
+  color: #a0a0a0;
+}
+:host .light .slotSingle button.days-btn {
+  background-color: var(--ion-color-light);
+  width: 100%;
+  border-radius: 50%;
+  position: relative;
+}
+:host .light .slotSingle button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .light .slotSingle button.days-btn p {
+  color: #a0a0a0;
+}
 :host .light .endSelection button.days-btn {
   border-radius: 50%;
 }
@@ -605,7 +867,10 @@
 }
 :host .light .startSelection button.days-btn,
 :host .light .endSelection button.days-btn,
-:host .light .between button.days-btn {
+:host .light .between button.days-btn,
+:host .light .slotStart button.days-btn,
+:host .light .slotEnd button.days-btn,
+:host .light .slotSingle button.days-btn {
   -webkit-transition-property: background-color;
   -moz-transition-property: background-color;
   -ms-transition-property: background-color;
@@ -780,6 +1045,53 @@
 :host .cal-color .between button.days-btn p {
   color: #fff;
 }
+:host .cal-color .slotStart button.days-btn {
+  width: 100%;
+  border-radius: 36px 0 0 36px;
+  position: relative;
+}
+:host .cal-color .slotEnd button.days-btn {
+  width: 100%;
+  border-radius: 0 36px 36px 0;
+  position: relative;
+}
+:host .cal-color .slotStart button.days-btn:after,
+:host .cal-color .slotEnd button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .cal-color .slotStart button.days-btn p,
+:host .cal-color .slotEnd button.days-btn p {
+  color: #fff;
+}
+:host .cal-color .slotSingle button.days-btn {
+  width: 100%;
+  border-radius: 50%;
+  position: relative;
+}
+:host .cal-color .slotSingle button.days-btn:after {
+  height: 36px;
+  width: 100%;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: white;
+  opacity: 0.25;
+}
+:host .cal-color .slotSingle button.days-btn p {
+  color: #fff;
+}
 :host .cal-color .endSelection button.days-btn {
   border-radius: 50%;
 }
@@ -791,7 +1103,10 @@
 }
 :host .cal-color .startSelection button.days-btn,
 :host .cal-color .endSelection button.days-btn,
-:host .cal-color .between button.days-btn {
+:host .cal-color .between button.days-btn,
+:host .cal-color .slotStart button.days-btn,
+:host .cal-color .slotEnd button.days-btn,
+:host .cal-color .slotSingle button.days-btn {
   -webkit-transition-property: background-color;
   -moz-transition-property: background-color;
   -ms-transition-property: background-color;

@@ -1,6 +1,6 @@
 {
-  "name": "@googlproxer/ion-range-calendar",
-  "version": "19.1.0",
+  "name": "@nikkaktus24/ion-range-calendar",
+  "version": "19.2.0",
   "peerDependencies": {
     "@angular/common": ">=19.0.0",
     "@angular/core": ">=19.0.0",
@@ -8,20 +8,22 @@
     "date-fns": ">=4.0.0"
   },
   "license": "MIT",
-  "description": "ion-range-calendar is an Ionic Angular range calendar",
-  "homepage": "https://github.com/HalleyAssist/ion-range-calendar",
+  "description": "ion-range-calendar is an Ionic Angular range calendar with slots functionality",
+  "homepage": "https://github.com/nikkaktus24/ion-range-calendar",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HalleyAssist/ion-range-calendar"
+    "url": "https://github.com/nikkaktus24/ion-range-calendar"
   },
   "bugs": {
-    "url": "https://github.com/HalleyAssist/ion-range-calendar/issues"
+    "url": "https://github.com/nikkaktus24/ion-range-calendar/issues"
   },
   "keywords": [
     "Angular 19",
     "ion-range-calendar",
     "Ionic 8",
-    "Range Calendar"
+    "Range Calendar",
+    "Slots",
+    "Date Picker"
   ],
   "dependencies": {
     "tslib": "^2.5.2"

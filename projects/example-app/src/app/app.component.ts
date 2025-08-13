@@ -80,7 +80,7 @@ export class AppComponent {
     },
     {
       from: startOfDay(new Date(2024, 11, 20)), // Dec 20, 2024
-      to: startOfDay(new Date(2024, 11, 22)), // Dec 22, 2024
+      to: startOfDay(new Date(2024, 11, 26)), // Dec 22, 2024
       title: 'Weekend Slot 2',
       cssClass: 'weekend-slot'
     },
@@ -117,14 +117,14 @@ export class AppComponent {
   public get currentOptions(): CalendarModalOptions {
     const baseOptions = { ...this.options };
     baseOptions.pickMode = this.mode;
-    
+
     if (this.mode === 'slots') {
       baseOptions.slots = this.slots;
       baseOptions.title = 'Select Slot';
       baseOptions.from = new Date(2024, 11, 1); // December 1, 2024
       baseOptions.to = new Date(2024, 11, 31); // December 31, 2024
     }
-    
+
     return baseOptions;
   }
 

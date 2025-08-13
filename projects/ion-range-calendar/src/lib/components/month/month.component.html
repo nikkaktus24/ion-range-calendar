@@ -29,8 +29,11 @@
       @for (day of month().days; track $index) {
         <div
           class="days"
-          [class.startSelection]="isStartSelection(day) || isSlotStart(day)"
-          [class.endSelection]="isEndSelection(day) || isSlotEnd(day)"
+          [class.startSelection]="pickMode() !== 'slots' && isStartSelection(day)"
+          [class.endSelection]="pickMode() !== 'slots' && isEndSelection(day)"
+          [class.slotStart]="isSlotStart(day) && !isSlotSingle(day)"
+          [class.slotEnd]="isSlotEnd(day) && !isSlotSingle(day)"
+          [class.slotSingle]="isSlotSingle(day)"
           [class.is-first-wrap]="day?.isFirst"
           [class.is-last-wrap]="day?.isLast"
           [class.between]="isBetween(day) || isSlotBetween(day)"

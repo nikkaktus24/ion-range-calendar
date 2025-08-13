@@ -184,6 +184,20 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     return dayTime > slotStart && dayTime < slotEnd;
   }
 
+  // Check if a day is a single-day slot (both start and end)
+  isSlotSingle(day: CalendarDay): boolean {
+    if (!day || this.pickMode() !== 'slots') return false;
+    
+    const slot = this.service.findSlotForDay(new Date(day.time), this.service.opts);
+    if (!slot) return false;
+    
+    const slotStart = new Date(slot.from);
+    const slotEnd = new Date(slot.to);
+    
+    return slotStart.toDateString() === slotEnd.toDateString() && 
+           new Date(day.time).toDateString() === slotStart.toDateString();
+  }
+
   onSelected(item: CalendarDay): void {
     if (this.readonly()) return;
     this.select.emit(item);
